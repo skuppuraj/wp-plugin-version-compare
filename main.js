@@ -1,7 +1,7 @@
 const https = require("https");
-const fs = require("fs");
 const path = require('path');
 const unzipper = require('unzipper');
+const fs = require('fs-extra');
 
 const wpURL = 'https://downloads.wordpress.org/plugin/';
 const downloadFolder = './downloads';
@@ -34,6 +34,10 @@ class Main{
     run(){
         this.createFolders();
         this.downloadFromFile();
+    }
+
+    emptyAllDir(){
+        
     }
 
     getFileName(){
@@ -106,7 +110,7 @@ class Main{
         this.unzipFile(zipFilePath, extractFolder)
         .then(() => {
             console.log('Extraction completed successfully.');
-            this.renameToFolder();
+            this.renameFromFolder();
         })
         .catch((err) => {
             console.error('Extraction failed:', err);
@@ -196,7 +200,11 @@ class Main{
             }
           });
         });
-      };
+    }
+
+    emptyDirectory(directoryPath) {
+        return fs.remove(directoryPath);
+    }
 
 }
 
