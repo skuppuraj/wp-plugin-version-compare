@@ -48,6 +48,10 @@ class Main{
         return this.getFileName()+'.'+this.fromVersion;
     }
 
+    getToFolderName(){
+        return this.getFileName()+'.'+this.toVersion;
+    }
+
     getFromFilePath(){
         return path.join(downloadFolder, this.getFromFileName());
     }
@@ -102,7 +106,20 @@ class Main{
         this.unzipFile(zipFilePath, extractFolder)
         .then(() => {
             console.log('Extraction completed successfully.');
-            this.renameFromFolder();
+            this.renameToFolder();
+        })
+        .catch((err) => {
+            console.error('Extraction failed:', err);
+        });
+    }
+
+    unZipToFile(){
+        const zipFilePath = this.getToFilePath(); // Update with your zip file path
+        console.log(zipFilePath);
+        this.unzipFile(zipFilePath, extractFolder)
+        .then(() => {
+            console.log('Extraction completed successfully.');
+            this.renameToFolder();
         })
         .catch((err) => {
             console.error('Extraction failed:', err);
@@ -112,6 +129,20 @@ class Main{
     renameFromFolder(){
         const oldFolderPath = path.join(extractFolder, this.getFileName()); // Update with the current folder path
         const newFolderPath = path.join(extractFolder, this.getFromFolderName());
+
+        this.renameFolder(oldFolderPath, newFolderPath)
+        .then(() => {
+            console.log(`Folder renamed successfully.${newFolderPath}`);
+            this.unZipToFile();
+        })
+        .catch((err) => {
+            console.error('Error renaming folder:', err);
+        });
+    }
+
+    renameToFolder(){
+        const oldFolderPath = path.join(extractFolder, this.getFileName()); // Update with the current folder path
+        const newFolderPath = path.join(extractFolder, this.getToFolderName());
 
         this.renameFolder(oldFolderPath, newFolderPath)
         .then(() => {
