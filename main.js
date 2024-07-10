@@ -1,6 +1,7 @@
 const https = require("https");
 const fs = require("fs");
 const path = require('path');
+const unzipper = require('unzipper');
 
 const wpURL = 'https://downloads.wordpress.org/plugin/';
 const downloadFolder = './downloads';
@@ -88,7 +89,15 @@ class Main{
     }
 
     unZipFromFile(){
-        
+        const zipFilePath = this.getFromFilePath(); // Update with your zip file path
+        console.log(zipFilePath);
+        this.unzipFile(zipFilePath, extractFolder)
+        .then(() => {
+            console.log('Extraction completed successfully.');
+        })
+        .catch((err) => {
+            console.error('Extraction failed:', err);
+        });
     }
 
     downloadFile (url, dest, callback) {
