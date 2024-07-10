@@ -36,8 +36,16 @@ class Main{
         this.downloadFromFile();
     }
 
+    getFileName(){
+        return this.fileName;
+    }
+
     getFromFileName(){
-        return this.fileName+'.'+this.fromVersion+'.zip';
+        return this.getFileName()+'.'+this.fromVersion+'.zip';
+    }
+
+    getFromFolderName(){
+        return this.getFileName()+'.'+this.fromVersion;
     }
 
     getFromFilePath(){
@@ -49,7 +57,7 @@ class Main{
     }
 
     getToFileName(){
-        return this.fileName+'.'+this.toVersion+'.zip';
+        return this.getFileName()+'.'+this.toVersion+'.zip';
     }
 
     getToFilePath(){
@@ -94,9 +102,23 @@ class Main{
         this.unzipFile(zipFilePath, extractFolder)
         .then(() => {
             console.log('Extraction completed successfully.');
+            this.renameFromFolder();
         })
         .catch((err) => {
             console.error('Extraction failed:', err);
+        });
+    }
+
+    renameFromFolder(){
+        const oldFolderPath = path.join(extractFolder, this.getFileName()); // Update with the current folder path
+        const newFolderPath = path.join(extractFolder, this.getFromFolderName());
+
+        this.renameFolder(oldFolderPath, newFolderPath)
+        .then(() => {
+            console.log(`Folder renamed successfully.${newFolderPath}`);
+        })
+        .catch((err) => {
+            console.error('Error renaming folder:', err);
         });
     }
 
@@ -132,6 +154,18 @@ class Main{
                     });
             });
     }
+
+    renameFolder (oldPath, newPath){
+        return new Promise((resolve, reject) => {
+          fs.rename(oldPath, newPath, (err) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve();
+            }
+          });
+        });
+      };
 
 }
 
