@@ -154,6 +154,7 @@ class Main{
         this.renameFolder(oldFolderPath, newFolderPath)
         .then(() => {
             console.log(`Folder renamed successfully.${newFolderPath}`);
+            this.openVsCode();
         })
         .catch((err) => {
             console.error('Error renaming folder:', err);
@@ -208,6 +209,14 @@ class Main{
     deleteDirectory(directoryPath) {
         console.log(`Clearing ${directoryPath} folder...`);
         shell.rm('-rf', directoryPath);
+    }
+
+    openVsCode(){
+        const from = path.join(extractFolder, this.getFromFolderName());
+        const to = path.join(extractFolder, this.getToFolderName());
+        if (shell.exec(`code ${from} ${to}`).code !== 0) {
+            console.log('Error While opend VS code');    
+        }
     }
 
 }
