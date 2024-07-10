@@ -1,6 +1,7 @@
 const https = require("https");
 const fs = require("fs");
 const path = require('path');
+const { exit } = require("process");
 
 const wpURL = 'https://downloads.wordpress.org/plugin/';
 const downloadFolder = './downloads';
@@ -18,38 +19,52 @@ if (!fs.existsSync(downloadFolder)){
     fs.mkdirSync(downloadFolder);
 }
 
-let fileName = args[0];
-const fromVersion = args[1];
-const toVersion = args[2];
+downloadFromFile(args);
 
-let fromFileName =fileName+'.'+fromVersion+'.zip';
+function downloadFromFile(args) {
+    let fileName = args[0];
+    const fromVersion = args[1];
+    const toVersion = args[2];
+    
+    let fromFileName =fileName+'.'+fromVersion+'.zip';
+    
+    let fromDownloadURL = wpURL+fromFileName;
+    
+    let fromFilePath = path.join(downloadFolder, fromFileName);
+    
+    // Start the download
+    downloadFile(fromDownloadURL, fromFilePath, (err) => {
+        if (err) {
+          console.error(`Error downloading the file: ${err}`);
+          process.exit();
+        } else {
+          console.log(`File downloaded successfully to ${fromFilePath}`);
+          downloadToFile(args);
+        }
+    });
+}
 
-let fromDownloadURL = wpURL+fromFileName;
+function downloadToFile( args ) {
+    
+    let fileName = args[0];
+    const fromVersion = args[1];
+    const toVersion = args[2];
 
-let fromFilePath = path.join(downloadFolder, fromFileName);
-
-// Start the download
-downloadFile(fromDownloadURL, fromFilePath, (err) => {
-    if (err) {
-      console.error(`Error downloading the file: ${err}`);
-    } else {
-      console.log(`File downloaded successfully to ${fromFilePath}`);
-    }
-});
-
-toFileName =fileName+'.'+toVersion+'.zip';
-
-let toDownloadURL = wpURL+toFileName;
-let toFilePath = path.join(downloadFolder, toFileName);
-
-downloadFile(toDownloadURL, toFilePath, (err) => {
-    if (err) {
-      console.error(`Error downloading the file: ${err}`);
-    } else {
-      console.log(`File downloaded successfully to ${toFilePath}`);
-    }
-});
-
+    let toFileName =fileName+'.'+toVersion+'.zip';
+    
+    let toDownloadURL = wpURL+toFileName;
+    let toFilePath = path.join(downloadFolder, toFileName);
+    
+    downloadFile(toDownloadURL, toFilePath, (err) => {
+        if (err) {
+          console.error(`Error downloading the file: ${err}`);
+          process.exit();
+        } else {
+          console.log(`File downloaded successfully to ${toFilePath}`);
+          
+        }
+    });
+}
 
 function downloadFile (url, dest, callback) {
     const file = fs.createWriteStream(dest);
