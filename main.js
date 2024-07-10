@@ -35,19 +35,6 @@ class Main{
         this.downloadFromFile();
     }
 
-    downloadFromFile() {
-        let fromFilePath = this.getFromFilePath();
-        this.downloadFile(this.getFromDownloadURL(), this.getFromFilePath(), (err) => {
-            if (err) {
-              console.error(`Error downloading the file: ${err}`);
-              process.exit();
-            } else {
-              console.log(`File downloaded successfully to ${fromFilePath}`);
-              this.downloadToFile();
-            }
-        });
-    }
-
     getFromFileName(){
         return this.fileName+'.'+this.fromVersion+'.zip';
     }
@@ -60,19 +47,42 @@ class Main{
         return  wpURL+this.getFromFileName();
     }
 
-    downloadToFile() {
-        let toFileName =this.fileName+'.'+this.toVersion+'.zip';
-        
-        let toDownloadURL = wpURL+toFileName;
-        let toFilePath = path.join(downloadFolder, toFileName);
-        
-        this.downloadFile(toDownloadURL, toFilePath, (err) => {
+    getToFileName(){
+        return this.fileName+'.'+this.toVersion+'.zip';
+    }
+
+    getToFilePath(){
+        return path.join(downloadFolder, this.getToFileName());
+    }
+
+    getToDownloadURL(){
+        return  wpURL+this.getToFileName();
+    }
+
+    downloadFromFile() {
+        let filePath = this.getFromFilePath();
+        this.downloadFile(this.getFromDownloadURL(), filePath, (err) => {
             if (err) {
               console.error(`Error downloading the file: ${err}`);
               process.exit();
             } else {
-              console.log(`File downloaded successfully to ${toFilePath}`);
-            //   this.unZipFromFile();
+              console.log(`File downloaded successfully to ${filePath}`);
+              this.downloadToFile();
+            }
+        });
+    }
+
+
+    downloadToFile() {
+        let filePath = this.getToFilePath();
+        
+        this.downloadFile(this.getToDownloadURL(), filePath, (err) => {
+            if (err) {
+              console.error(`Error downloading the file: ${err}`);
+              process.exit();
+            } else {
+              console.log(`File downloaded successfully to ${filePath}`);
+              this.unZipFromFile();
             }
         });
     }
