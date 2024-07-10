@@ -36,15 +36,8 @@ class Main{
     }
 
     downloadFromFile() {
-
-        let fromFileName =this.fileName+'.'+this.fromVersion+'.zip';
-        
-        let fromDownloadURL = wpURL+fromFileName;
-        
-        let fromFilePath = path.join(downloadFolder, fromFileName);
-        
-        // Start the download
-        this.downloadFile(fromDownloadURL, fromFilePath, (err) => {
+        let fromFilePath = this.getFromFilePath();
+        this.downloadFile(this.getFromDownloadURL(), this.getFromFilePath(), (err) => {
             if (err) {
               console.error(`Error downloading the file: ${err}`);
               process.exit();
@@ -53,6 +46,18 @@ class Main{
               this.downloadToFile();
             }
         });
+    }
+
+    getFromFileName(){
+        return this.fileName+'.'+this.fromVersion+'.zip';
+    }
+
+    getFromFilePath(){
+        return path.join(downloadFolder, this.getFromFileName());
+    }
+
+    getFromDownloadURL(){
+        return  wpURL+this.getFromFileName();
     }
 
     downloadToFile() {
@@ -67,9 +72,13 @@ class Main{
               process.exit();
             } else {
               console.log(`File downloaded successfully to ${toFilePath}`);
-              
+            //   this.unZipFromFile();
             }
         });
+    }
+
+    unZipFromFile(){
+        
     }
 
     downloadFile (url, dest, callback) {
@@ -88,6 +97,21 @@ class Main{
           fs.unlink(dest); // Delete the file async. (But we don't check the result)
           callback(err.message);
         });
+    }
+
+    unzipFile (zipFilePath, extractFolder) {
+        return new Promise((resolve, reject) => {
+                fs.createReadStream(zipFilePath)
+                    .pipe(unzipper.Extract({ path: extractFolder }))
+                    .on('close', () => {
+                    console.log(`File successfully unzipped : ${zipFilePath}`);
+                    resolve();
+                    })
+                    .on('error', (err) => {
+                    console.error(`Error unzipping file: ${err}`);
+                    reject(err);
+                    });
+            });
     }
 
 }
