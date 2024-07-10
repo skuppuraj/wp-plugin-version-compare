@@ -2,6 +2,7 @@ const https = require("https");
 const path = require('path');
 const unzipper = require('unzipper');
 const fs = require('fs-extra');
+const shell = require('shelljs');
 
 const wpURL = 'https://downloads.wordpress.org/plugin/';
 const downloadFolder = './downloads';
@@ -32,12 +33,14 @@ class Main{
     }
 
     run(){
+        this.deleteDirectoryAllDir();
         this.createFolders();
         this.downloadFromFile();
     }
-
-    emptyAllDir(){
-        
+    
+    deleteDirectoryAllDir(){
+        this.deleteDirectory(downloadFolder);
+        this.deleteDirectory(extractFolder);
     }
 
     getFileName(){
@@ -202,8 +205,9 @@ class Main{
         });
     }
 
-    emptyDirectory(directoryPath) {
-        return fs.remove(directoryPath);
+    deleteDirectory(directoryPath) {
+        console.log(`Clearing ${directoryPath} folder...`);
+        shell.rm('-rf', directoryPath);
     }
 
 }
