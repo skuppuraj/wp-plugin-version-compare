@@ -1,0 +1,16 @@
+{
+  "name": "wp-plugin-version-compare",
+  "version": "1.0.0",
+  "description": "It will download two plugins and open them in to vs code editor",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kuppuraj",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "https": "^1.0.0",
+    "path": "^0.12.7"
+  }
+}
