@@ -19,8 +19,9 @@ async function scrapeWebsite(url, pluginSlug) {
     const $ = cheerio.load(data);
 
     // Example: Scrape all <h1> tags
-    const title = $('.container h1').text();
+    let title = $('.container h1').text();
     console.log(title);
+    title = title.replace('–', '-');
     let fixedVersion = '';
     if ($('.patched-yes').length > 0) {
         fixedVersion = $('th:contains("Patched Version")').next().find('ul li').text()
@@ -45,6 +46,7 @@ async function scrapeWebsite(url, pluginSlug) {
     
     let score = $('.cvss-score-chart span').text();
     let description = $('h3:contains("Description")').next().text();
+    description = description.replace('–', '-');
     console.log(score);
     if (!pluginSlug) {
       pluginSlug = ''
