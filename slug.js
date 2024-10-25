@@ -65,7 +65,7 @@ class Slug {
               console.error(`Error downloading the file: ${err}`);
               process.exit();
             } else {
-              console.log(`File downloaded successfully to ${filePath}`);
+            //   console.log(`File downloaded successfully to ${filePath}`);
               this.unZipFromFile();
             }
         });
@@ -73,14 +73,13 @@ class Slug {
 
     unZipFromFile(){
         const zipFilePath = this.getFromFilePath(); // Update with your zip file path
-        console.log(zipFilePath);
         this.unzipFile(zipFilePath, extractFolder)
         .then(() => {
             this.findSlugFile(extractFolder);
-            console.log('Extraction completed successfully.');
+            // console.log('Extraction completed successfully.');
         })
         .catch((err) => {
-            console.error('Extraction failed:', err);
+            console.error('Error Extraction failed:', err);
         });
     }
 
@@ -89,7 +88,7 @@ class Slug {
                 fs.createReadStream(zipFilePath)
                     .pipe(unzipper.Extract({ path: extractFolder }))
                     .on('close', () => {
-                    console.log(`File successfully unzipped : ${zipFilePath}`);
+                    // console.log(`File successfully unzipped : ${zipFilePath}`);
                     resolve();
                     })
                     .on('error', (err) => {
@@ -103,7 +102,7 @@ class Slug {
         const file = fs.createWriteStream(dest);
         https.get(url, (response) => {
           if (response.statusCode !== 200) {
-            callback(`Failed to download file, status code: ${response.statusCode}`);
+            callback(`Error Failed to download file, status code: ${response.statusCode}`);
             return;
           }
           
@@ -135,7 +134,8 @@ class Slug {
         
                 // Step 5: Check if the file contains the string 'Plugin Name'
                 if (content.includes('Plugin Name:') && content.includes('Version:') &&  content.includes('Description:')) {
-                  console.log('\x1b[33m', `Slug Name: ${this.fileName}/${file}`);
+                //   console.log('\x1b[33m', `Slug Name: ${this.fileName}/${file}`);
+                  console.log(`${this.fileName}/${file}`);
                 }
               }
             }
@@ -151,10 +151,12 @@ class Slug {
     }
 
     deleteDirectory(directoryPath) {
-        console.log(`Clearing ${directoryPath} folder...`);
+        // console.log(`Clearing ${directoryPath} folder...`);
         shell.rm('-rf', directoryPath);
     }
 }
+
+// module.exports = Slug;
 
 let obj = new Slug(args);
 
