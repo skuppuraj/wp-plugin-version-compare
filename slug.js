@@ -133,7 +133,7 @@ class Slug {
                 const content = await fs.readFile(filePath, 'utf-8');
         
                 // Step 5: Check if the file contains the string 'Plugin Name'
-                if (content.includes('Plugin Name:') && content.includes('Version:') &&  content.includes('Description:')) {
+                if ((content.includes('Plugin name:') || content.includes('Plugin Name:')) && content.includes('Version:') &&  content.includes('Description:')) {
                 //   console.log('\x1b[33m', `Slug Name: ${this.fileName}/${file}`);
                   console.log(`${this.fileName}/${file}`);
                 }
