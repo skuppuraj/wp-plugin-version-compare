@@ -79,7 +79,6 @@ async function scrapeWebsite(url, pluginSlug) {
                   pluginSlug = result.stdout.trim();
                 } else {
                   console.error('Error executing command:', result.stderr);
-                  let result = shell.exec(`node slug.js ${slug} ${affectedVersion}`, { silent: true });
                   console.log("Not able to find slug");
                   process.exit();
                 }
