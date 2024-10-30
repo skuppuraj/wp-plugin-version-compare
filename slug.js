@@ -18,7 +18,10 @@ class Slug {
             process.exit();
         }
         this.fileName = args[0];
-        this.version = args[1];
+        this.version = ''; 
+        if (args[1]) {
+            this.version = args[1];
+        }
     }
 
     createFolders(){
@@ -44,7 +47,11 @@ class Slug {
     }
 
     getDownloadFileName(){
-        return this.getFileName()+'.'+this.version+'.zip';
+        let name = '';
+        if (this.version) {
+            name = '.'+this.version;
+        }
+        return this.getFileName()+name+'.zip';
     }
 
     getFromFilePath(){
