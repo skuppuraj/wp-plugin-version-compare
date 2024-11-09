@@ -77,6 +77,11 @@ async function scrapeWebsite(url, pluginSlug) {
                 let result = shell.exec(`node slug.js ${slug} ${fixedVersion}`, { silent: true });
                 if (result.code === 0 && !result.stderr.includes('Error')) {
                   pluginSlug = result.stdout.trim();
+                  console.log('found slug '+pluginSlug);
+                  if (!pluginSlug) {
+                    console.log("Not able to find slug");
+                    process.exit();
+                  }
                 } else {
                   console.error('Error executing command:', result.stderr);
                   console.log("Not able to find slug");
@@ -86,6 +91,11 @@ async function scrapeWebsite(url, pluginSlug) {
                 let result = shell.exec(`node slug.js ${slug}`, { silent: true });
                 if (result.code === 0 && !result.stderr.includes('Error')) {
                   pluginSlug = result.stdout.trim();
+                  console.log('found slug '+pluginSlug);
+                  if (!pluginSlug) {
+                    console.log("Not able to find slug");
+                    process.exit();
+                  }
                 } else {
                   console.error('Error executing command:', result.stderr);
                   console.log("Not able to find slug");
