@@ -12,9 +12,13 @@ if (args.length <= 0) {
 // Function to scrape the website
 async function scrapeWebsite(url, pluginSlug) {
   try {
+    console.log(url);
+    
     // Fetch the website's HTML
-    const { data } = await axios.get(url);
-
+    const { data } = await axios.get(url, {
+      "headers": {
+        "cookie": "aws-waf-token=f761505b-472a-4747-8841-4633a4829036:BQoAt/FGwpwMAAAA:fV0aEm2EzLFF99DHZ2IPvNfn+bhGYAm4eVBg0lCwpvsD69VmIwMYh090d8tXm1t/sTNaIKoFLwLQt/0PxcvbXkvyEXQWLAqfIM7vJB4UQcNKWJ8G3SRCrN5nZYOOVzw7Up7S1F73iJ+7uVIFMGDW+SbLZTfp5+Xk+WsgaFyE1JQallWHiqhxRdVLIeYKn01ZuS5nhw==",
+      }});
     // Load the HTML into cheerio
     const $ = cheerio.load(data);
 
@@ -68,7 +72,7 @@ async function scrapeWebsite(url, pluginSlug) {
             pluginSlug = result.stdout.trim();
             console.log('found slug '+pluginSlug);
             if (!pluginSlug) {
-              console.log("Not able to find slug");
+              console.log("Not able to find slug -1");
               process.exit();
             }
           } else {
@@ -79,12 +83,12 @@ async function scrapeWebsite(url, pluginSlug) {
                   pluginSlug = result.stdout.trim();
                   console.log('found slug '+pluginSlug);
                   if (!pluginSlug) {
-                    console.log("Not able to find slug");
+                    console.log("Not able to find slug 0");
                     process.exit();
                   }
                 } else {
                   console.error('Error executing command:', result.stderr);
-                  console.log("Not able to find slug");
+                  console.log("Not able to find slug 1");
                   process.exit();
                 }
             }else if(slug){
@@ -93,16 +97,16 @@ async function scrapeWebsite(url, pluginSlug) {
                   pluginSlug = result.stdout.trim();
                   console.log('found slug '+pluginSlug);
                   if (!pluginSlug) {
-                    console.log("Not able to find slug");
+                    console.log("Not able to find slug 2");
                     process.exit();
                   }
                 } else {
                   console.error('Error executing command:', result.stderr);
-                  console.log("Not able to find slug");
+                  console.log("Not able to find slug 3");
                   process.exit();
                 }
             }else{
-              console.log("Not able to find slug");
+              console.log("Not able to find slug 4");
               process.exit();
             }
           }
@@ -129,6 +133,7 @@ async function scrapeWebsite(url, pluginSlug) {
       formData.append('block', false);
       formData.append('log', false);
       formData.append('is_logged_in', false);
+      formData.append('status', 'draft');
 
       
       formData.append('rule', '');
@@ -169,7 +174,7 @@ async function scrapeWebsite(url, pluginSlug) {
         is_dfwp:'',
       }
       console.log(dataObject);
-      axios.post('https://cron.defendwp.com/add-new-rule', dataObject)
+      axios.post('https://cron.defendwp.org/add-new-rule', dataObject)
       .then(response => {
         console.log('Success:', response.data);
       })
