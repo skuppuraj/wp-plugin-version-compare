@@ -67,7 +67,7 @@ class Slug {
         let url = this.getDownloadURL();
         this.downloadFile(url, filePath, (err) => {
             if (err) {
-                console.log(url);
+                console.log(`url -> ${url}`);
                 
               console.error(`Error downloading the file: ${err}`);
               process.exit();
@@ -109,7 +109,7 @@ class Slug {
         const file = fs.createWriteStream(dest);
         https.get(url, (response) => {
           if (response.statusCode !== 200) {
-            callback(`Error Failed to download file, status code: ${response.statusCode}`);
+            callback(`Error Failed to download file, status code: ${response.statusCode} url -> ${url}`);
             return;
           }
           
