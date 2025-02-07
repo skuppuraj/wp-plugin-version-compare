@@ -2,22 +2,25 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const shell = require('shelljs');
 
-const args = process.argv.slice(2);
+const args = require('minimist')(process.argv.slice(2)); 
 
-if (args.length <= 0) {
-    console.log("Invalid args");
+if (!args.url) {
+    console.log("Invalid url");
     process.exit();
 }
 
+
 // Function to scrape the website
-async function scrapeWebsite(url, pluginSlug) {
+async function scrapeWebsite(url, pluginSlug, cookie) {
   try {
     console.log(url);
+    console.log(pluginSlug);
+    console.log(cookie);
     
     // Fetch the website's HTML
     const { data } = await axios.get(url, {
       "headers": {
-        "cookie": "aws-waf-token=f761505b-472a-4747-8841-4633a4829036:BQoAt/FGwpwMAAAA:fV0aEm2EzLFF99DHZ2IPvNfn+bhGYAm4eVBg0lCwpvsD69VmIwMYh090d8tXm1t/sTNaIKoFLwLQt/0PxcvbXkvyEXQWLAqfIM7vJB4UQcNKWJ8G3SRCrN5nZYOOVzw7Up7S1F73iJ+7uVIFMGDW+SbLZTfp5+Xk+WsgaFyE1JQallWHiqhxRdVLIeYKn01ZuS5nhw==",
+        "cookie": `aws-waf-token=${cookie}`,
       }});
     // Load the HTML into cheerio
     const $ = cheerio.load(data);
@@ -242,4 +245,4 @@ function formDataToObject(formData) {
 }
 
 // Run the scraper
-scrapeWebsite(args[0], args[1]);
+scrapeWebsite(args.url, args.slug, args.cookie);
