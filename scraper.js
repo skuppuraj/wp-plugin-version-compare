@@ -167,7 +167,8 @@ async function scrapeWebsite(url, pluginSlug, cookie) {
       formData.append('remove_filter', '');
       formData.append('notify_user', '');
       formData.append('run', '');
-      formData.append('notes', url);
+      formData.append('source_links', url);
+      formData.append('notes', '');
       formData.append('tests', '');
       formData.append('tests_decode', '');
       formData.append('expl', description);
