@@ -92,17 +92,21 @@ class Slug {
 
     unzipFile (zipFilePath, extractFolder) {
         return new Promise((resolve, reject) => {
-                fs.createReadStream(zipFilePath)
-                    .pipe(unzipper.Extract({ path: extractFolder }))
-                    .on('close', () => {
-                    // console.log(`File successfully unzipped : ${zipFilePath}`);
-                    resolve();
-                    })
-                    .on('error', (err) => {
-                    console.error(`Error unzipping file: ${err}`);
-                    reject(err);
-                    });
-            });
+            fs.createReadStream(zipFilePath)
+                .pipe(unzipper.Parse())
+                .on("entry", async (entry) => {
+                    const filePath = `${extractFolder}/${entry.path}`;
+                    if (entry.type === "Directory") {
+                        await fs.ensureDir(filePath);
+                        entry.autodrain();
+                    } else {
+                        await fs.ensureFile(filePath);
+                        entry.pipe(fs.createWriteStream(filePath));
+                    }
+                })
+                .on("close", resolve)
+                .on("error", reject);
+        });
     }
 
     downloadFile (url, dest, callback) {
