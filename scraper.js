@@ -23,6 +23,11 @@ async function scrapeWebsite(url, pluginSlug, cookie) {
         "cookie": `aws-waf-token=${cookie}`,
       }});
     // Load the HTML into cheerio
+    
+    if (!data) {
+      console.log("<h1>Cookie expired. Please refresh the wordfence page and again get the command.</h1>");
+      process.exit();
+    }
     const $ = cheerio.load(data);
 
     // Example: Scrape all <h1> tags

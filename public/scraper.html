@@ -9,7 +9,9 @@
         body { font-family: Arial, sans-serif; padding: 20px; }
         textarea { width: 100%; height: 100px; }
         button { margin-top: 10px; padding: 10px; }
-        pre { background: #f4f4f4; padding: 10px; border-radius: 5px;     text-wrap: auto;}
+        pre, code { background: #f4f4f4; padding: 10px; border-radius: 5px;     text-wrap: auto;white-space: pre-wrap;  /* Ensures text wraps within the pre tag */
+    word-wrap: break-word;   /* Allows long words or URLs to break */
+    overflow-wrap: break-word;}
     </style>
 </head>
 <body>
@@ -39,7 +41,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+                document.getElementById("output").textContent = JSON.stringify(data, null, 2).replace(/\\n/g, "\n\n");;
             })
             .catch(error => {
                 document.getElementById("output").textContent = "Error: " + error;
