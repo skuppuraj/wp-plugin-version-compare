@@ -144,7 +144,7 @@ class Slug {
                 // console.log(content.includes('Version:'));
                 // console.log(content.includes('Description:'));
                 
-                if ((content.includes('Plugin name:') || content.includes('Plugin Name:')) && content.includes('Version:')) {
+                if ((content.includes('Plugin name:') || content.includes('Plugin Name:') || content.includes('plugin name:')) && content.includes('Version:')) {
                 //   console.log('\x1b[33m', `Slug Name: ${this.fileName}/${file}`);
                   console.log(`${this.fileName}/${file}`);
                 }

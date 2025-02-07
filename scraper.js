@@ -84,7 +84,7 @@ async function scrapeWebsite(url, pluginSlug, cookie) {
               process.exit();
             }
           } else {
-            console.error('Error executing command:', result.stderr);
+            console.error('Error executing command1:', result.stderr);
             if (fixedVersion !='') {
                 let result = shell.exec(`node slug.js ${slug} ${fixedVersion}`, { silent: true });
                 if (result.code === 0 && !result.stderr.includes('Error')) {
@@ -95,7 +95,7 @@ async function scrapeWebsite(url, pluginSlug, cookie) {
                     process.exit();
                   }
                 } else {
-                  console.error('Error executing command:', result.stderr);
+                  console.error('Error executing command2:', result.stderr);
                   console.log("Not able to find slug 1");
                   process.exit();
                 }
@@ -109,7 +109,7 @@ async function scrapeWebsite(url, pluginSlug, cookie) {
                     process.exit();
                   }
                 } else {
-                  console.error('Error executing command:', result.stderr);
+                  console.error('Error executing command3:', result.stderr);
                   console.log("Not able to find slug 3");
                   process.exit();
                 }
