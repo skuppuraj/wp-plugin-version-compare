@@ -97,7 +97,19 @@ async function scrapeWebsite(url, pluginSlug, cookie) {
                 } else {
                   console.error('Error executing command2:', result.stderr);
                   console.log("Not able to find slug 1");
-                  process.exit();
+                  result = shell.exec(`node slug.js ${slug}`, { silent: true });
+                  if (result.code === 0 && !result.stderr.includes('Error')) {
+                    pluginSlug = result.stdout.trim();
+                    console.log('found slug '+pluginSlug);
+                    if (!pluginSlug) {
+                      console.log("Not able to find slug 12");
+                      process.exit();
+                    }
+                  } else {
+                    console.error('Error executing command3:', result.stderr);
+                    console.log("Not able to find slug 13");
+                    process.exit();
+                  }
                 }
             }else if(slug){
                 let result = shell.exec(`node slug.js ${slug}`, { silent: true });
